@@ -2,32 +2,42 @@
 #include "../include/Time.h"
 using namespace std;
 
-// Overload the + operator
 Time Time::operator+(const Time &other) const
 {   
+    int totalMinutes = this->hours * 60 + this->minutes + other.hours * 60 + other.minutes;
+    int newHours = totalMinutes / 60;
+    int newMinutes = totalMinutes % 60;
+    return Time(newHours, newMinutes);
 }
 
-// Overload the += operator
 Time& Time::operator+=(const Time &other)
 {   
+    this->hours += other.hours;
+    this->minutes += other.minutes;
+    while (this->minutes >= 60) {
+        this->minutes -= 60;
+        this->hours++;
+    }
+    return *this;
 }
 
-// Overload the < operator
 bool Time::operator<(const Time &other) const
 {
+    return (this->hours * 60 + this->minutes) < (other.hours * 60 + other.minutes);
 }
 
-// Overload the > operator
 bool Time::operator>(const Time &other) const
 {
+    return (this->hours * 60 + this->minutes) > (other.hours * 60 + other.minutes);
 }
 
-// Overload the == operator
 bool Time::operator==(const Time &other) const
 {
+    return (this->hours * 60 + this->minutes) == (other.hours * 60 + other.minutes);
 }
 
-// Overload the friend function operator<<
 ostream &operator<<(ostream &os, const Time &tm)
 {
+    os << tm.hours << " hours and " << tm.minutes << " minutes";
+    return os;
 }
